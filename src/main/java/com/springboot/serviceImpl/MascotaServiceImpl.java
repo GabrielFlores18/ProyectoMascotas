@@ -29,10 +29,10 @@ public class MascotaServiceImpl implements MascotaService{
 			response.put("mensaje", "No existen registros");
 			response.put("status", HttpStatus.NOT_FOUND.value());
 			response.put("mascota", mascotas);
-			return ResponseEntity.status(HttpStatus.OK).body(response);
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 		}else {
 			response.put("mensaje", "Lista de mascotas completa");
-			response.put("status", HttpStatus.OK.value());
+			response.put("status", HttpStatus.OK);
 			response.put("mascota", mascotas);
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 		}

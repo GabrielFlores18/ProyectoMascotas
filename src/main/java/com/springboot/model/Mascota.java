@@ -17,4 +17,10 @@ public class Mascota {
 	private Long id;
 	
 	private String nombre;
+	private int edad;
+	private String raza;
+	private String sexo;
+	private String tamanio;
+	private String tipo;
+
 }

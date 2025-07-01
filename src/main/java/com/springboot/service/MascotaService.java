@@ -13,6 +13,7 @@ public interface MascotaService {
 	public ResponseEntity<Map<String, Object>> grabarMascota(Mascota mascota);
 	public ResponseEntity<Map<String, Object>> actualizarMascota(Long id, Mascota mascota);
 	public ResponseEntity<Map<String, Object>> eliminarMascota(Long id);
+	public ResponseEntity<Map<String, Object>> buscarPorCodigo(Long id);
 	
 	
 }

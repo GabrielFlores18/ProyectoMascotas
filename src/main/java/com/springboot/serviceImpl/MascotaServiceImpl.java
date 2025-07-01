@@ -46,16 +46,16 @@ public class MascotaServiceImpl implements MascotaService{
 
 	
 	@Override
-	public ResponseEntity<Map<String, Object>> buscarPorNombre(String nombre) {
+	public ResponseEntity<Map<String, Object>> buscarPorCodigo(Long id) {
 		Map<String, Object> response = new HashMap<>();
 		try {
-			Optional<Mascota> mascotaExiste = repository.findByNombre(nombre);
+			Optional<Mascota> mascotaExiste = repository.findById(id);
 		if(!mascotaExiste.isPresent()) {
-			response.put("mensaje", "Mascota con nombre" + nombre + "no encontrado");
+			response.put("mensaje", "Mascota con codigo " + id + " no encontrado");
 			response.put("status", HttpStatus.NOT_FOUND.value());
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 		}else {
-			response.put("mensaje", "Mascota con nombre" + nombre + "encontrado");
+			response.put("mensaje", "Mascota con codigo " + id + " encontrado");
 			response.put("mascota", mascotaExiste.get());
 			response.put("status", HttpStatus.OK.value());
 			return ResponseEntity.status(HttpStatus.OK).body(response);
@@ -85,7 +85,7 @@ public class MascotaServiceImpl implements MascotaService{
 		Optional<Mascota> mascotaExiste = repository.findById(id);
 		
 		if(!mascotaExiste.isPresent()) {
-			response.put("mensaje", "mascota con codigo" + id + "no encontrado");
+			response.put("mensaje", "mascota con codigo " + id + " no encontrado");
 			response.put("status", HttpStatus.NOT_FOUND);
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 		}else {
@@ -112,18 +112,28 @@ public class MascotaServiceImpl implements MascotaService{
 		Optional<Mascota> mascotaExiste = repository.findById(id);
 		
 		if(!mascotaExiste.isPresent()) {
-			response.put("mensaje", "Mascota con codigo" + id + "no encontrado");
+			response.put("mensaje", "Mascota con codigo " + id + "no encontrado");
 			response.put("status", HttpStatus.NOT_FOUND);
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 
 		}else {
 			repository.deleteById(id);
-			response.put("mensaje", "Mensaje con codigo" + id + "Eliminado Exitosamente");
+			response.put("mensaje", "Mensaje con codigo " + id + "Eliminado Exitosamente");
 			response.put("status", HttpStatus.OK);
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 		}
 		
 	}
+
+
+	@Override
+	public ResponseEntity<Map<String, Object>> buscarPorNombre(String nombre) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
 	
 	
 

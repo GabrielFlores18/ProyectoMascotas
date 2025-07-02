@@ -12,13 +12,26 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import lombok.AllArgsConstructor;
 
 @Configuration
+@AllArgsConstructor
 public class SecurityConfig {
 
+	private final UserDetailsService userDetailsService;
+	private final JWTAuthorizationFilter jwtAuthorizationFilter;
+	
 	@Bean
-	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+	SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationManager authManager) throws Exception{
+		JWTAuthenticationFilter jwtAuthenticationFilter = new JWTAuthenticationFilter();
+		jwtAuthenticationFilter.setAuthenticationManager(authManager);
+		jwtAuthenticationFilter.setFilterProcessesUrl("/login");
+		
 		return http
+				.csrf()
+				.and()
 				.csrf().disable()
 				.authorizeRequests()
 				.anyRequest()
@@ -29,6 +42,8 @@ public class SecurityConfig {
 				.sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				.and()
+				.addFilter(jwtAuthenticationFilter)
+				.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
 				.build();
 	}
 	
@@ -37,7 +52,7 @@ public class SecurityConfig {
 		return new BCryptPasswordEncoder();
 	}
 	
-	@Bean
+	/*@Bean
 	UserDetailsService userDetailsService() {
 		InMemoryUserDetailsManager memoryManager = new InMemoryUserDetailsManager();
 		memoryManager.createUser(
@@ -47,18 +62,20 @@ public class SecurityConfig {
 				.roles()
 				.build());
 		return memoryManager;
-	}
+	}*/
 	
 	@Bean
 	AuthenticationManager authManager(HttpSecurity http) throws Exception{
 		return http
 				.getSharedObject(AuthenticationManagerBuilder.class)
-				.userDetailsService(userDetailsService())
+				.userDetailsService(userDetailsService)
 				.passwordEncoder(passwordEncoder())
 				.and()
 				.build();
 	}
-	
+	/*public static void main(String[] args) {
+		System.out.println("Password encriptado:" + new BCryptPasswordEncoder().encode("ron"));
+	}*/
 	
 }
 

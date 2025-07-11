@@ -34,8 +34,13 @@ public class SecurityConfig {
 				.and()
 				.csrf().disable()
 				.authorizeRequests()
+
 					.requestMatchers("/api/mascotas/**").permitAll()
 					.anyRequest().authenticated()
+
+				.anyRequest()
+				.authenticated()
+
 				.and()
 				.httpBasic()
 				.and()
